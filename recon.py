@@ -122,7 +122,7 @@ def runnmap(ip, ports, report=False, verbose=False):
 
         for host in nm.all_hosts():
             print("-" * 30)
-            print("Host : {} ({})".format(host, nm[host].git hostname()))
+            print("Host : {} ({})".format(host, nm[host].hostname()))
             print("State : {}".format(nm[host].state()))
             for proto in nm[host].all_protocols():
                 print("-" * 20)
