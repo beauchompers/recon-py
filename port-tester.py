@@ -25,7 +25,7 @@ def validate_params(ip, port):
     return True
 
 # test the ip and port
-def port_test (ip, port):
+def port_test (ip, port, report=False):
     print("\nTesting: {} on Port: {}".format(ip, port))
     try:
         host = ip
@@ -34,10 +34,11 @@ def port_test (ip, port):
         sock.settimeout(1)
         result = sock.connect_ex((host,port))
         if result == 0:
-            # write to file if needed
-            # text_file = open("port-tester-hosts.txt", "a")
-            # text_file.write("{},{}".format(ip,port))
-            # text_file.close()
+            if report:
+                filename = ip + "-" + str(port) + ".txt"
+                text_file = open(filename, "a")
+                text_file.write("{},{}".format(ip,port))
+                text_file.close()
             print("Port is open.\n")
         else:
             print("Port is not open.\n")
@@ -54,13 +55,14 @@ def __main__():
     parser = argparse.ArgumentParser(description='Port Tester Script')
     parser.add_argument('--ip', '-i', dest='ip', help='ip address to test')
     parser.add_argument('--port', '-p', dest='port', help='port to test')
+    parser.add_argument('--file', dest='file', action='store_true', default=False, help='output results to a text file')
     parser.add_argument('--version', '-v', action='version', version='%(prog)s 1.0')
     args = parser.parse_args()
 
     test = validate_params(args.ip, args.port)
 
     if test:
-        port_test(args.ip, args.port)
+        port_test(args.ip, args.port, args.file)
 
     print("Port test completed")
     sys.exit()
